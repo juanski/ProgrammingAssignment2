@@ -1,24 +1,43 @@
-## Put comments here that give an overall description of what your
-## functions do
+## -----------------------------------------------------------------------------------
+## Data Science | R Programming Week 3
+## Assignmnet 2
+## JLC
+## -----------------------------------------------------------------------------------
+
+## Matrix inversion is usually a costly computation and there may be some benefit
+## to caching the inverse of a matrix rather than compute it repeatedly.
+## The following two functions cache and compute the inverse of a matrix.
+
+## -----------------------------------------------------------------------------------
 
 
-## The following functions cache and compute the inverse of a matrix.
+
+
 
 ## makeCacheMatrix: This function creates a special "matrix" object 
 ## that can cache its inverse.
 makeCacheMatrix <- function(x = matrix()) {
-
-        inv <- NULL
-        set <- function(y) {
-                x <<- y
-                inv <<- NULL
-        }
-
-        get <- function() x
-        setinverse <- function(inverse) inv <<- inverse
-        getinverse <- function() inv
-
-        list(set=set, get=get, setinverse=setinverse, getinverse=getinverse)
+  inv <- NULL
+  
+  ## set value of matrix
+  set <- function(y) {
+    x <<- y
+    inv <<- NULL
+  }
+  ## get value of matrix
+  get <- function() x
+  
+  ## set inverse value of matris
+  setinverse <- function(inverse) inv <<- inverse
+  
+  ## get inverse value of matrix
+  getinverse <- function() inv
+  list(
+        set=set
+        , get=get
+        , setinverse=setinverse
+        , getinverse=getinverse
+      )
 }
 
 
@@ -27,24 +46,22 @@ makeCacheMatrix <- function(x = matrix()) {
 ## (and the matrix has not changed), then the cachesolve should retrieve the inverse 
 ## from the cache. For this assignment, assume that the matrix supplied is always invertible.
 cacheSolve <- function(x, ...) {
-
-	## Return a matrix that is the inverse of 'x'
-        inv <- x$getinverse()
-
-        if(!is.null(inv)) {
-
-        	## if the inverse is already cashed, then return the cached value
-                message("getting cached data.") 
-                return(inv)
-        }
-
-        ## if inverse is not cached the get inverse
-        data <- x$get()
-        inv <- solve(data)
-        x$setinverse(inv)
-
-        inv
-}
+	
+  inv <- x$getinverse()
+  
+  ## if inverse already computed, use that value and alert user that cached data is used
+  if(!is.null(inv)) {    
+    message("getting cached data.")
+    return(inv)
+  }
+  
+  ## if not already computed, calucate inverse, set value in cache and output value
+  data <- x$get()
+  inv <- solve(data, ...)
+  x$setinverse(inv)
+  
+  inv
+} 
 
 
 ## TEST RUN USING EXAMPLE FROM BOARDS
